@@ -1,0 +1,32 @@
+{
+  "name": "modernlog",
+  "version": "1.0.1",
+  "description": "A logger that logs to console.log with date and stacktrace",
+  "main": "dist/Logger.js",
+  "dependencies": {},
+  "types": "./dist/Logger.d.ts",
+  "devDependencies": {
+    "@types/node": "^14.10.1",
+    "tsc": "^1.20150623.0"
+  },
+  "scripts": {
+    "test": "node test",
+    "prepublishOnly": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeanouina/logger.git"
+  },
+  "keywords": [
+    "logger",
+    "console",
+    "log",
+    "error"
+  ],
+  "author": "jeanouina",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeanouina/logger/issues"
+  },
+  "homepage": "https://github.com/jeanouina/logger#readme"
+}
