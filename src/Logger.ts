@@ -21,7 +21,7 @@ export const options = {
 }
 
 export function exit(code?:number){
-    return process.exit()
+    return process.exit(code)
 }
 
 const consoleLog = console.log
