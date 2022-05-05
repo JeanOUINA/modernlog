@@ -1,32 +1,36 @@
 {
-  "name": "modernlog",
-  "version": "1.0.1",
-  "description": "A logger that logs to console.log with date and stacktrace",
-  "main": "dist/Logger.js",
-  "dependencies": {},
-  "types": "./dist/Logger.d.ts",
-  "devDependencies": {
-    "@types/node": "^14.10.1",
-    "typescript": "^4.0.3"
-  },
-  "scripts": {
-    "test": "node test",
-    "prepublishOnly": "tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jeanouina/logger.git"
-  },
-  "keywords": [
-    "logger",
-    "console",
-    "log",
-    "error"
-  ],
-  "author": "jeanouina",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jeanouina/logger/issues"
-  },
-  "homepage": "https://github.com/jeanouina/logger#readme"
-}
+	"name": "modernlog",
+	"version": "1.0.1",
+	"description": "A logger that logs to console.log with date and stacktrace",
+	"main": "dist/Logger.js",
+	"types": "dist/Logger.d.ts",
+	"dependencies": {
+	  "spitroast": "^1.4.2"
+	},
+	"devDependencies": {
+	  "@types/node": "^14.10.1",
+	  "typescript": "^4.0.3"
+	},
+	"scripts": {
+	  "test": "node test",
+	  "prepare": "tsc",
+	  "dev": "tsc --watch"
+	},
+	"repository": {
+	  "type": "git",
+	  "url": "git+https://github.com/jeanouina/logger.git"
+	},
+	"keywords": [
+	  "logger",
+	  "console",
+	  "log",
+	  "error"
+	],
+	"author": "jeanouina",
+	"license": "MIT",
+	"bugs": {
+	  "url": "https://github.com/jeanouina/modernlog/issues"
+	},
+	"homepage": "https://github.com/jeanouina/modernlog#readme"
+  }
+  
