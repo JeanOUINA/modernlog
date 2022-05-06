@@ -21,15 +21,10 @@ const colors = {
 	warn: 33
 }
 
-function getStackFileName(){
+function getStackFileName() {
 	const stack = new Error().stack.split(/[\n\r]+/g).map(e => e.trim());
-	let line = stack.filter(e => !e.startsWith("-> "))[3];
-	const index = stack.findIndex(e => e === line);
-	if(index !== 3){ // stacktrace
-		line += "\n    "+stack[index+1];
-	}
 
-	return line;
+	return stack.reverse().find(e => !e.includes("node:"));
 }
 
 function getLogPrefix(type: LogType): string[] {
@@ -38,32 +33,51 @@ function getLogPrefix(type: LogType): string[] {
 	let emoji = symbols[type];
 
 	const datestr = `${("0"+date.getHours()).slice(-2)}:${("0"+date.getMinutes()).slice(-2)}:${("0"+date.getSeconds()).slice(-2)} ${("0"+(date.getMonth()+1)).slice(-2)}/${("0"+date.getDate()).slice(-2)}/${date.getFullYear()}`;
-	let logs = [`[\x1b[35m${datestr}\x1b[0m] [\x1b[${color}m${emoji}${type.toUpperCase()}\x1b[0m]`];
 
-	if(options.filename) logs.push("\n", getStackFileName());
+	return [`[\x1b[35m${datestr}\x1b[0m]`, `[\x1b[${color}m${emoji}${type.toUpperCase()}\x1b[0m]`];
+}
 
-	return logs;
+function getLogSuffix() {
+	let suffix = [];
+
+	if(!options.ignoreOptions) {
+		if(options.filename) {
+			suffix.push(...["\n", getStackFileName()]);
+		}
+		 
+		if(options.extraSpaces > 0) {
+			suffix.push(...Array(options.extraSpaces).fill("\n"));
+		}
+	}
+
+	return suffix;
 }
 
 function onExit(code: number) {
-	if(typeof code !== "number") throw new TypeError("`code` argument should be a number.")
-	const filename = options.filename
-	options.filename = false
-	;(code === 0 ? console.warn : console.error)(`Exiting with code ${code}.`)
-	options.filename = filename
+	if(typeof code !== "number") throw new TypeError("`code` argument should be a number.");
+
+	const logger = code === 0 ? console.warn : console.error;
+
+	if(options.ignoreOptions) {
+		logger(`Exiting with code ${code}.`);
+	} else {
+		options.ignoreOptions = true
+		logger(`Exiting with code ${code}.`);
+		options.ignoreOptions = false
+	}
 }
 
+const logTypes: LogType[] = [ "log", "info", "warn", "error" ];
 let patches: Function[] = [];
 export function patch() {
 	if(patches.length === 0) {
-		for(let logType of [ "log", "info", "warn", "error" ]) {
+		for(let logType of logTypes) {
 			patches[patches.length] = instead(logType, console, (args: string[], originalFunction: Function) => {
-				return originalFunction(...getLogPrefix(logType as LogType), ...args);
+				return originalFunction(...getLogPrefix(logType), ...args, ...getLogSuffix());
 			});
 		}
 	
-		let exitListener = process.on("exit", onExit);
-
+		process.on("exit", onExit);
 		patches[patches.length] = () => process.removeListener("exit", onExit);
 
 		return true;
@@ -85,15 +99,15 @@ export function unpatch(): Boolean {
 	}
 }
 
-export const options = {
-	filename: false
-}
-
-const customLog = (type: LogType, ...args: string[]) => {
-	return patches.length > 0 ? console[type](...args) : console[type](...getLogPrefix(type), ...args);
-}
-
+const customLog = (type: LogType, ...args: string[]) => patches.length > 0 ? console[type](...args) : console[type](...getLogPrefix(type), ...args, ...getLogSuffix());
 export const log = (...args: string[]) => customLog("log", ...args);
 export const info = (...args: string[]) => customLog("info", ...args);
 export const warn = (...args: string[]) => customLog("warn", ...args);
 export const error = (...args: string[]) => customLog("error", ...args);
+
+export const options = {
+	filename: false,
+	extraSpaces: 0,
+
+	ignoreOptions: false
+}
