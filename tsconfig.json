@@ -4,5 +4,9 @@
         "outDir": "./dist",
         "noImplicitAny": true,
         "declaration": true
-    }
+    },
+    "exclude": [
+        "patch.d.ts",
+        "dist"
+    ]
 }

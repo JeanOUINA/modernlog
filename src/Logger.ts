@@ -42,11 +42,11 @@ function getLogSuffix() {
 
 	if(!options.ignoreOptions) {
 		if(options.filename) {
-			suffix.push(...["\n", getStackFileName()]);
+			suffix.push("\n", getStackFileName());
 		}
 		 
 		if(options.extraSpaces > 0) {
-			suffix.push(...Array(options.extraSpaces).fill("\n"));
+			suffix.push("\n".repeat(options.extraSpaces));
 		}
 	}
 

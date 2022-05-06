@@ -1,4 +1,7 @@
-const Logger = require("../dist/autopatch.js")
+const Logger = require("../patch.js")
+
+Logger.options.filename = true
+Logger.options.extraSpaces = 1
 
 Logger.log("logger.log");
 Logger.info("logger.info");
