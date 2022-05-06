@@ -1,6 +1,6 @@
 {
 	"name": "modernlog",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A logger that logs to console.log with date and stacktrace",
 	"main": "dist/Logger.js",
 	"types": "dist/Logger.d.ts",
@@ -18,7 +18,7 @@
 	},
 	"repository": {
 	  "type": "git",
-	  "url": "git+https://github.com/jeanouina/logger.git"
+	  "url": "git+https://github.com/jeanouina/modernlog.git"
 	},
 	"keywords": [
 	  "logger",
