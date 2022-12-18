@@ -1,24 +1,27 @@
 import { instead } from "spitroast";
 
-type LogType = "log" | "error" | "info" | "warn";
+type LogType = "log" | "error" | "info" | "warn" | "debug";
 
-const symbols = process.platform === "win32" ? {
+const symbols:Record<LogType, string> = process.platform === "win32" ? {
 	log: "√ ",
 	error: "× ",
 	info: "i ",
-	warn: "‼ "
+	warn: "‼ ",
+	debug: "i "
 } : {
 	log: "✔ ",
 	error: "✖ ",
 	info: "ℹ ",
-	warn: "⚠ "
+	warn: "⚠ ",
+	debug: "ℹ "
 }
 
-const colors = {
+const colors:Record<LogType, number> = {
 	log: 32,
 	error: 31,
 	info: 34,
-	warn: 33
+	warn: 33,
+	debug: 35
 }
 
 function getStackFileName() {
@@ -61,13 +64,13 @@ function onExit(code: number) {
 	if(options.ignoreOptions) {
 		logger(`Exiting with code ${code}.`);
 	} else {
-		options.ignoreOptions = true
+		options.ignoreOptions = true;
 		logger(`Exiting with code ${code}.`);
-		options.ignoreOptions = false
+		options.ignoreOptions = false;
 	}
 }
 
-const logTypes: LogType[] = [ "log", "info", "warn", "error" ];
+const logTypes: LogType[] = [ "log", "info", "warn", "error", "debug" ];
 let patches: Function[] = [];
 export function patch() {
 	if(patches.length === 0) {
@@ -104,6 +107,7 @@ export const log = (...args: string[]) => customLog("log", ...args);
 export const info = (...args: string[]) => customLog("info", ...args);
 export const warn = (...args: string[]) => customLog("warn", ...args);
 export const error = (...args: string[]) => customLog("error", ...args);
+export const debug = (...args: string[]) => customLog("debug", ...args);
 
 export const options = {
 	filename: false,

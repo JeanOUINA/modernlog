@@ -1,6 +1,6 @@
 {
 	"name": "modernlog",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "A logger that logs to console.log with date and stacktrace",
 	"main": "dist/Logger.js",
 	"types": "dist/Logger.d.ts",

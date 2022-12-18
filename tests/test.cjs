@@ -7,6 +7,7 @@ Logger.log("logger.log");
 Logger.info("logger.info");
 Logger.warn("logger.warn");
 Logger.error("logger.error");
+Logger.debug("logger.debug");
 
 console.log("console.log");
 
